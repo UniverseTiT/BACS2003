@@ -39,9 +39,10 @@ def recommend(user_input, track_titles, music_data):
         # Display the top 10 similar tracks
         if collab_filtering_result:
             st.success(f"Top 10 tracks similar to '{closest_match}' based on Collaborative Filtering:")
-            with st.beta_expander("Similar Tracks"):
-                for i, track in enumerate(collab_filtering_result[:10], start=1):
-                    st.write(f"{i}. {track}")
+            st.write('<ul id="collapsible-list" style="list-style-type: none; padding-left: 0;">', unsafe_allow_html=True)
+            for i, track in enumerate(collab_filtering_result[:10], start=1):
+                st.write(f"<li>{i}. {track}</li>", unsafe_allow_html=True)
+            st.write('</ul>', unsafe_allow_html=True)
         else:
             st.warning("No similar tracks found based on Collaborative Filtering.")
     else:
@@ -71,6 +72,27 @@ def main():
     # Display recommendation button
     if st.button("Recommend"):
         recommend(user_input, track_titles, music_data)
+
+    # Inject JavaScript for collapsible container
+    st.write("""
+        <script>
+            var coll = document.getElementById("collapsible-list");
+            if (coll) {
+                var items = coll.getElementsByTagName("li");
+                for (var i = 0; i < items.length; i++) {
+                    items[i].addEventListener("click", function() {
+                        this.classList.toggle("active");
+                        var content = this.nextElementSibling;
+                        if (content.style.maxHeight){
+                            content.style.maxHeight = null;
+                        } else {
+                            content.style.maxHeight = content.scrollHeight + "px";
+                        } 
+                    });
+                }
+            }
+        </script>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
