@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from difflib import get_close_matches
+import time
 
 # Load the dataset
 @st.cache
@@ -31,14 +32,16 @@ def recommend(user_input, track_titles, music_data):
     
     if closest_match:
         # Show the closest match
-        st.write(f"Closest match: {closest_match}")
+        st.success(f"Closest match found: {closest_match}")
         
         # Perform collaborative filtering
-        collab_filtering_result = collaborative_filtering(closest_match, music_data)
+        with st.spinner("Finding similar tracks..."):
+            time.sleep(2)  # Simulating some processing time
+            collab_filtering_result = collaborative_filtering(closest_match, music_data)
         
         # Display the top 10 similar tracks
         if collab_filtering_result:
-            st.write("Top 10 tracks similar to", closest_match, "based on Collaborative Filtering:")
+            st.success(f"Top 10 tracks similar to '{closest_match}' based on Collaborative Filtering:")
             for track in collab_filtering_result:
                 st.write(track)
         else:
@@ -61,6 +64,7 @@ def main():
     track_titles = music_data['Track'].tolist()
     
     # Set up the Streamlit app
+    st.set_page_config(page_title="Spotify Recommender System", page_icon=":musical_note:")
     st.title("Spotify Recommender System")
     
     # Get user input
