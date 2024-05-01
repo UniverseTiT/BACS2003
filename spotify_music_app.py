@@ -39,10 +39,13 @@ def recommend(user_input, track_titles, music_data):
         # Display the top 10 similar tracks
         if collab_filtering_result:
             st.success(f"Top 10 tracks similar to '{closest_match}' based on Collaborative Filtering:")
-            st.write('<ul id="collapsible-list" style="list-style-type: none; padding-left: 0;">', unsafe_allow_html=True)
+            st.markdown('<style>.spotify-list {list-style-type: none; margin: 0; padding: 0;}</style>', unsafe_allow_html=True)
+            st.markdown('<style>.spotify-list li {padding: 10px; border-bottom: 1px solid #e1e1e1;}</style>', unsafe_allow_html=True)
+            st.markdown('<style>.spotify-list li:last-child {border-bottom: none;}</style>', unsafe_allow_html=True)
+            st.markdown('<ul class="spotify-list">', unsafe_allow_html=True)
             for i, track in enumerate(collab_filtering_result[:10], start=1):
-                st.write(f"<li>{i}. {track}</li>", unsafe_allow_html=True)
-            st.write('</ul>', unsafe_allow_html=True)
+                st.markdown(f'<li>{i}. {track}</li>', unsafe_allow_html=True)
+            st.markdown('</ul>', unsafe_allow_html=True)
         else:
             st.warning("No similar tracks found based on Collaborative Filtering.")
     else:
@@ -58,6 +61,8 @@ def collaborative_filtering(track_title, music_data):
 def main():
     # Set up the Streamlit app
     st.set_page_config(page_title="Spotify Recommender System", page_icon=":musical_note:")
+    st.markdown('<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">', unsafe_allow_html=True)
+    st.markdown('<style>body {font-family: "Roboto", sans-serif;}</style>', unsafe_allow_html=True)
     st.title("Spotify Recommender System")
     
     # Load the dataset
@@ -67,32 +72,11 @@ def main():
     track_titles = music_data['Track'].tolist()
     
     # Get user input
-    user_input = st.text_input("Enter a track title:")
+    user_input = st.text_input("Enter a track title:", "")
     
     # Display recommendation button
     if st.button("Recommend"):
         recommend(user_input, track_titles, music_data)
-
-    # Inject JavaScript for collapsible container
-    st.write("""
-        <script>
-            var coll = document.getElementById("collapsible-list");
-            if (coll) {
-                var items = coll.getElementsByTagName("li");
-                for (var i = 0; i < items.length; i++) {
-                    items[i].addEventListener("click", function() {
-                        this.classList.toggle("active");
-                        var content = this.nextElementSibling;
-                        if (content.style.maxHeight){
-                            content.style.maxHeight = null;
-                        } else {
-                            content.style.maxHeight = content.scrollHeight + "px";
-                        } 
-                    });
-                }
-            }
-        </script>
-    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
