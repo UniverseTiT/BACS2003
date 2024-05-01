@@ -48,8 +48,9 @@ def recommend(user_input, track_titles, music_data):
 
 # Collaborative filtering function (replace this with your actual collaborative filtering function)
 def collaborative_filtering(track_title, music_data):
-    # Dummy implementation: return top 10 tracks from the dataset
-    return music_data[music_data['Track'] != track_title].head(10)
+    # Dummy implementation: return top 10 track titles from the dataset excluding the input track
+    similar_tracks = music_data[music_data['Track'] != track_title]['Track'].head(10).tolist()
+    return similar_tracks
 
 # Main function
 def main():
