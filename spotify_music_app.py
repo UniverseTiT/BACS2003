@@ -39,10 +39,9 @@ def recommend(user_input, track_titles, music_data):
         # Display the top 10 similar tracks
         if collab_filtering_result:
             st.success(f"🎶 Top 10 tracks similar to '{closest_match}' based on Collaborative Filtering:")
-            st.markdown('<ul style="list-style-type: none; padding-left: 0;">', unsafe_allow_html=True)
             for i, track in enumerate(collab_filtering_result[:10], start=1):
-                st.markdown(f'<li>{i}. {track}</li>', unsafe_allow_html=True)
-            st.markdown('</ul>', unsafe_allow_html=True)
+                st.write(f"{i}. {track}")
+                st.image(get_song_album_cover_url(track, music_data))
         else:
             st.warning("No similar tracks found based on Collaborative Filtering.")
     else:
@@ -72,8 +71,12 @@ def main():
     user_input = st.text_input("🔍 Enter a track title:", "")
     
     # Display recommendation button
-    if st.button("🚀 Recommend"):
-        recommend(user_input, track_titles, music_data)
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        if st.button("🚀 Recommend"):
+            recommend(user_input, track_titles, music_data)
+    with col2:
+        st.empty()
 
 if __name__ == "__main__":
     main()
