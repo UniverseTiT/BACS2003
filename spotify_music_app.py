@@ -57,15 +57,15 @@ def collaborative_filtering(track_title, music_data):
 
 # Main function
 def main():
+    # Set up the Streamlit app
+    st.set_page_config(page_title="Spotify Recommender System", page_icon=":musical_note:")
+    st.title("Spotify Recommender System")
+    
     # Load the dataset
     music_data = load_data()
     
     # Extract track titles
     track_titles = music_data['Track'].tolist()
-    
-    # Set up the Streamlit app
-    st.set_page_config(page_title="Spotify Recommender System", page_icon=":musical_note:")
-    st.title("Spotify Recommender System")
     
     # Get user input
     user_input = st.text_input("Enter a track title:")
