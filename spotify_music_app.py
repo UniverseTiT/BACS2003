@@ -39,11 +39,9 @@ def recommend(user_input, track_titles, music_data):
         # Display the top 10 similar tracks
         if collab_filtering_result:
             st.success(f"Top 10 tracks similar to '{closest_match}' based on Collaborative Filtering:")
-            with st.beta_container():
-                st.write('<ul style="list-style-type: none; padding-left: 0;">', unsafe_allow_html=True)
+            with st.beta_expander("Similar Tracks"):
                 for i, track in enumerate(collab_filtering_result[:10], start=1):
-                    st.write(f"<li>{i}. {track}</li>", unsafe_allow_html=True)
-                st.write('</ul>', unsafe_allow_html=True)
+                    st.write(f"{i}. {track}")
         else:
             st.warning("No similar tracks found based on Collaborative Filtering.")
     else:
