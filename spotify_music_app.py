@@ -31,16 +31,16 @@ def recommend(user_input, track_titles, music_data):
     
     if closest_match:
         # Show the closest match
-        st.success(f"Closest match found: {closest_match}")
+        st.success(f"🎵 Closest match found: {closest_match}")
         
         # Perform collaborative filtering
         collab_filtering_result = collaborative_filtering(closest_match, music_data)
         
         # Display the top 10 similar tracks
         if collab_filtering_result:
-            st.success(f"Top 10 tracks similar to '{closest_match}' based on Collaborative Filtering:")
+            st.success(f"🎶 Top 10 tracks similar to '{closest_match}' based on Collaborative Filtering:")
             st.markdown('<style>.spotify-list {list-style-type: none; margin: 0; padding: 0;}</style>', unsafe_allow_html=True)
-            st.markdown('<style>.spotify-list li {padding: 10px; border-bottom: 1px solid #e1e1e1;}</style>', unsafe_allow_html=True)
+            st.markdown('<style>.spotify-list li {padding: 10px; border-bottom: 1px solid #333333; color: #ffffff; font-size: 16px;}</style>', unsafe_allow_html=True)
             st.markdown('<style>.spotify-list li:last-child {border-bottom: none;}</style>', unsafe_allow_html=True)
             st.markdown('<ul class="spotify-list">', unsafe_allow_html=True)
             for i, track in enumerate(collab_filtering_result[:10], start=1):
@@ -61,9 +61,9 @@ def collaborative_filtering(track_title, music_data):
 def main():
     # Set up the Streamlit app
     st.set_page_config(page_title="Spotify Recommender System", page_icon=":musical_note:")
-    st.markdown('<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">', unsafe_allow_html=True)
-    st.markdown('<style>body {font-family: "Roboto", sans-serif;}</style>', unsafe_allow_html=True)
-    st.title("Spotify Recommender System")
+    st.markdown('<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">', unsafe_allow_html=True)
+    st.markdown('<style>body {font-family: "Montserrat", sans-serif; background-color: #1DB954;}</style>', unsafe_allow_html=True)
+    st.title("🎧 Spotify Recommender System")
     
     # Load the dataset
     music_data = load_data()
@@ -72,10 +72,10 @@ def main():
     track_titles = music_data['Track'].tolist()
     
     # Get user input
-    user_input = st.text_input("Enter a track title:", "")
+    user_input = st.text_input("🔍 Enter a track title:", "")
     
     # Display recommendation button
-    if st.button("Recommend"):
+    if st.button("🚀 Recommend"):
         recommend(user_input, track_titles, music_data)
 
 if __name__ == "__main__":
