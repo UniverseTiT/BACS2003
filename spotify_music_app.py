@@ -42,12 +42,11 @@ def recommend(user_input, track_titles, music_data):
         # Display the top 10 similar tracks
         if collab_filtering_result:
             st.success(f"Top 10 tracks similar to '{closest_match}' based on Collaborative Filtering:")
-            for i, track in enumerate(collab_filtering_result):
-                # Set yellow color for the top 10 list
-                if i < 10:
-                    st.markdown(f"<font color='yellow'>{track}</font>", unsafe_allow_html=True)
-                else:
-                    st.write(track)
+            # Add styling to the output
+            st.write('<div style="padding: 10px; background-color: #1DB954; border-radius: 5px;">', unsafe_allow_html=True)
+            for track in collab_filtering_result[:10]:
+                st.write(track)
+            st.write('</div>', unsafe_allow_html=True)
         else:
             st.warning("No similar tracks found based on Collaborative Filtering.")
     else:
@@ -56,7 +55,7 @@ def recommend(user_input, track_titles, music_data):
 # Collaborative filtering function (replace this with your actual collaborative filtering function)
 def collaborative_filtering(track_title, music_data):
     # Dummy implementation: return top 10 track titles from the dataset excluding the input track
-    similar_tracks = music_data[music_data['Track'] != track_title]['Track'].head(20).tolist()  # Increase to 20 for demonstration
+    similar_tracks = music_data[music_data['Track'] != track_title]['Track'].head(10).tolist()
     return similar_tracks
 
 # Main function
