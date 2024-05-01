@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 from difflib import get_close_matches
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
 
 # Load the dataset
 @st.cache
@@ -20,25 +18,6 @@ def find_closest_match(user_input, track_titles):
     else:
         # Return None if no close match found
         return None
-
-# Initialize the Spotify client
-def get_song_album_cover_url(song_name, artist_name):
-    CLIENT_ID = "70a9fb89662f4dac8d07321b259eaad7"
-    CLIENT_SECRET = "4d6710460d764fbbb8d8753dc094d131"
-
-    # Initialize the Spotify client
-    client_credentials_manager = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
-    sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
-
-    search_query = f"track:{song_name} artist:{artist_name}"
-    results = sp.search(q=search_query, type="track")
-
-    if results and results["tracks"]["items"]:
-        track = results["tracks"]["items"][0]
-        album_cover_url = track["album"]["images"][0]["url"]
-        return album_cover_url
-    else:
-        return "https://i.postimg.cc/0QNxYz4V/social.png"
 
 # Function to handle the recommendation process
 def recommend(user_input, track_titles, music_data):
@@ -60,9 +39,13 @@ def recommend(user_input, track_titles, music_data):
         # Display the top 10 similar tracks
         if collab_filtering_result:
             st.success(f"🎶 Top 10 tracks similar to '{closest_match}' based on Collaborative Filtering:")
+            st.markdown('<style>.spotify-list {list-style-type: none; margin: 0; padding: 0;}</style>', unsafe_allow_html=True)
+            st.markdown('<style>.spotify-list li {padding: 10px; border-bottom: 1px solid #333333; color: #ffffff; font-size: 16px;}</style>', unsafe_allow_html=True)
+            st.markdown('<style>.spotify-list li:last-child {border-bottom: none;}</style>', unsafe_allow_html=True)
+            st.markdown('<ul class="spotify-list">', unsafe_allow_html=True)
             for i, track in enumerate(collab_filtering_result[:10], start=1):
-                st.write(f"{i}. {track}")
-                st.image(get_song_album_cover_url(track, music_data['artist']))
+                st.markdown(f'<li>{i}. {track}</li>', unsafe_allow_html=True)
+            st.markdown('</ul>', unsafe_allow_html=True)
         else:
             st.warning("No similar tracks found based on Collaborative Filtering.")
     else:
@@ -71,7 +54,7 @@ def recommend(user_input, track_titles, music_data):
 # Collaborative filtering function (replace this with your actual collaborative filtering function)
 def collaborative_filtering(track_title, music_data):
     # Dummy implementation: return top 10 track titles from the dataset excluding the input track
-    similar_tracks = music_data[music_data['song'] != track_title]['song'].head(10).tolist()
+    similar_tracks = music_data[music_data['Track'] != track_title]['Track'].head(10).tolist()
     return similar_tracks
 
 # Main function
@@ -86,18 +69,14 @@ def main():
     music_data = load_data()
     
     # Extract track titles
-    track_titles = music_data['song'].tolist()
+    track_titles = music_data['Track'].tolist()
     
     # Get user input
     user_input = st.text_input("🔍 Enter a track title:", "")
     
     # Display recommendation button
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        if st.button("🚀 Recommend"):
-            recommend(user_input, track_titles, music_data)
-    with col2:
-        st.empty()
+    if st.button("🚀 Recommend"):
+        recommend(user_input, track_titles, music_data)
 
 if __name__ == "__main__":
     main()
