@@ -1,5 +1,11 @@
 import streamlit as st
+import pandas as pd
 from difflib import get_close_matches
+
+# Load the dataset
+@st.cache
+def load_data():
+    return pd.read_csv("Spotify_Youtube.csv")
 
 # Function to handle errors and variations in user input
 def find_closest_match(user_input, track_titles):
@@ -14,7 +20,7 @@ def find_closest_match(user_input, track_titles):
         return None
 
 # Function to handle the recommendation process
-def recommend(user_input, track_titles):
+def recommend(user_input, track_titles, music_data):
     # Check if the user input is empty
     if not user_input:
         st.error("Please enter a track title.")
@@ -28,7 +34,7 @@ def recommend(user_input, track_titles):
         st.write(f"Closest match: {closest_match}")
         
         # Perform collaborative filtering
-        collab_filtering_result = collaborative_filtering(closest_match)
+        collab_filtering_result = collaborative_filtering(closest_match, music_data)
         
         # Display the top 10 similar tracks
         st.write("Top 10 tracks similar to", closest_match, "based on Collaborative Filtering:")
@@ -37,9 +43,19 @@ def recommend(user_input, track_titles):
     else:
         st.error(f"No close match found for '{user_input}'. Please enter another title.")
 
+# Collaborative filtering function (replace this with your actual collaborative filtering function)
+def collaborative_filtering(track_title, music_data):
+    # Implement your collaborative filtering logic here
+    # You can use the 'music_data' DataFrame to access the dataset
+    # Dummy implementation returning empty list for now
+    return []
+
 # Main function
 def main():
-    # Load your data here
+    # Load the dataset
+    music_data = load_data()
+    
+    # Extract track titles
     track_titles = music_data['Track'].tolist()
     
     # Set up the Streamlit app
@@ -50,7 +66,7 @@ def main():
     
     # Display recommendation button
     if st.button("Recommend"):
-        recommend(user_input, track_titles)
+        recommend(user_input, track_titles, music_data)
 
 if __name__ == "__main__":
     main()
