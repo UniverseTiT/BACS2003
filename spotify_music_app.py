@@ -39,10 +39,7 @@ def recommend(user_input, track_titles, music_data):
         # Display the top 10 similar tracks
         if collab_filtering_result:
             st.success(f"🎶 Top 10 tracks similar to '{closest_match}' based on Collaborative Filtering:")
-            st.markdown('<style>.spotify-list {list-style-type: none; margin: 0; padding: 0;}</style>', unsafe_allow_html=True)
-            st.markdown('<style>.spotify-list li {padding: 10px; border-bottom: 1px solid #333333; color: #ffffff; font-size: 16px;}</style>', unsafe_allow_html=True)
-            st.markdown('<style>.spotify-list li:last-child {border-bottom: none;}</style>', unsafe_allow_html=True)
-            st.markdown('<ul class="spotify-list">', unsafe_allow_html=True)
+            st.markdown('<ul style="list-style-type: none; padding-left: 0;">', unsafe_allow_html=True)
             for i, track in enumerate(collab_filtering_result[:10], start=1):
                 st.markdown(f'<li>{i}. {track}</li>', unsafe_allow_html=True)
             st.markdown('</ul>', unsafe_allow_html=True)
