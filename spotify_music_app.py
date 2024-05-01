@@ -37,18 +37,19 @@ def recommend(user_input, track_titles, music_data):
         collab_filtering_result = collaborative_filtering(closest_match, music_data)
         
         # Display the top 10 similar tracks
-        st.write("Top 10 tracks similar to", closest_match, "based on Collaborative Filtering:")
-        for track in collab_filtering_result:
-            st.write(track)
+        if collab_filtering_result:
+            st.write("Top 10 tracks similar to", closest_match, "based on Collaborative Filtering:")
+            for track in collab_filtering_result:
+                st.write(track)
+        else:
+            st.warning("No similar tracks found based on Collaborative Filtering.")
     else:
         st.error(f"No close match found for '{user_input}'. Please enter another title.")
 
 # Collaborative filtering function (replace this with your actual collaborative filtering function)
 def collaborative_filtering(track_title, music_data):
-    # Implement your collaborative filtering logic here
-    # You can use the 'music_data' DataFrame to access the dataset
-    # Dummy implementation returning empty list for now
-    return []
+    # Dummy implementation: return top 10 tracks from the dataset
+    return music_data[music_data['Track'] != track_title].head(10)
 
 # Main function
 def main():
