@@ -59,24 +59,23 @@ def collaborative_filtering(track_title, music_data):
 
 # Main function
 def main():
-    # Set up the Streamlit app
-    st.set_page_config(page_title="Spotify Recommender System", page_icon=":musical_note:")
-    st.markdown('<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">', unsafe_allow_html=True)
-    st.markdown('<style>body {font-family: "Montserrat", sans-serif; background-color: #1DB954;}</style>', unsafe_allow_html=True)
-    st.title("🎧 Spotify Recommender System")
+    # Set page title and favicon
+    st.set_page_config(page_title="Music Recommender", page_icon="🎵")
     
-    # Load the dataset
+    # Load the data
     music_data = load_data()
     
     # Extract track titles
     track_titles = music_data['Track'].tolist()
+
+    # Set app title
+    st.title("Music Recommender")
     
     # Get user input
-    user_input = st.text_input("🔍 Enter a track title:", "")
-    
-    # Display recommendation button
-    if st.button("🚀 Recommend"):
-        recommend(user_input, track_titles, music_data)
+    user_input = st.text_input("Enter a track title:", "")
+
+    # Recommend similar tracks
+    recommend(user_input, track_titles, music_data)
 
 if __name__ == "__main__":
     main()
