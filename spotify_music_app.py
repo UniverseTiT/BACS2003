@@ -22,11 +22,14 @@ def find_closest_match(user_input, track_titles):
 
 # Collaborative Filtering
 def collaborative_filtering(track_title, music_data):
+    # Drop rows with missing or invalid values in 'Likes' and 'Views' columns
+    music_data_cleaned = music_data.dropna(subset=['Likes', 'Views'])
+    
     # Compute similarity matrix
-    similarity_matrix = cosine_similarity(music_data[['Likes', 'Views']])
+    similarity_matrix = cosine_similarity(music_data_cleaned[['Likes', 'Views']])
     
     # Find index of the input track
-    track_index = music_data[music_data['Track'] == track_title].index[0]
+    track_index = music_data_cleaned[music_data_cleaned['Track'] == track_title].index[0]
     
     # Retrieve similar tracks with their similarity scores
     similar_tracks = list(enumerate(similarity_matrix[track_index]))
@@ -41,7 +44,7 @@ def collaborative_filtering(track_title, music_data):
     top_indices = [index for index, _ in top_similar_tracks]
     
     # Retrieve the actual track titles corresponding to the indices
-    top_track_titles = music_data.iloc[top_indices]['Track'].tolist()
+    top_track_titles = music_data_cleaned.iloc[top_indices]['Track'].tolist()
     
     # Return top similar tracks
     return top_track_titles
