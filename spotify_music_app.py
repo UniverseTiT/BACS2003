@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import spotipy
 from difflib import get_close_matches
 from sklearn.metrics.pairwise import cosine_similarity
 
