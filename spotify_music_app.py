@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from difflib import get_close_matches
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Load the dataset
 @st.cache
@@ -18,6 +19,26 @@ def find_closest_match(user_input, track_titles):
     else:
         # Return None if no close match found
         return None
+
+# Collaborative filtering function
+def collaborative_filtering(track_title, music_data):
+    # Compute similarity matrix
+    similarity_matrix = cosine_similarity(music_data[['Likes', 'Views']])
+    
+    # Find index of the input track
+    track_index = music_data[music_data['Track'] == track_title].index[0]
+    
+    # Retrieve similar tracks with their similarity scores
+    similar_tracks = list(enumerate(similarity_matrix[track_index]))
+    
+    # Sort similar tracks by similarity score in descending order
+    sorted_similar_tracks = sorted(similar_tracks, key=lambda x: x[1], reverse=True)
+    
+    # Extract top similar tracks excluding the input track itself
+    top_similar_tracks = [(music_data.iloc[i[0]]['Track'], i[1]) for i in sorted_similar_tracks[1:11]]
+    
+    # Return top similar tracks with their similarity scores
+    return top_similar_tracks
 
 # Function to handle the recommendation process
 def recommend(user_input, track_titles, music_data):
@@ -43,19 +64,13 @@ def recommend(user_input, track_titles, music_data):
             st.markdown('<style>.spotify-list li {padding: 10px; border-bottom: 1px solid #333333; color: #ffffff; font-size: 16px;}</style>', unsafe_allow_html=True)
             st.markdown('<style>.spotify-list li:last-child {border-bottom: none;}</style>', unsafe_allow_html=True)
             st.markdown('<ul class="spotify-list">', unsafe_allow_html=True)
-            for i, track in enumerate(collab_filtering_result[:10], start=1):
-                st.markdown(f'<li>{i}. {track}</li>', unsafe_allow_html=True)
+            for i, (track, similarity_score) in enumerate(collab_filtering_result, start=1):
+                st.markdown(f'<li>{i}. {track} (Similarity Score: {similarity_score})</li>', unsafe_allow_html=True)
             st.markdown('</ul>', unsafe_allow_html=True)
         else:
             st.warning("No similar tracks found based on Collaborative Filtering.")
     else:
         st.error(f"No close match found for '{user_input}'. Please enter another title.")
-
-# Collaborative filtering function (replace this with your actual collaborative filtering function)
-def collaborative_filtering(track_title, music_data):
-    # Dummy implementation: return top 10 track titles from the dataset excluding the input track
-    similar_tracks = music_data[music_data['Track'] != track_title]['Track'].head(10).tolist()
-    return similar_tracks
 
 # Main function
 def main():
