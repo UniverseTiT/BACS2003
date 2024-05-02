@@ -49,7 +49,7 @@ def recommend(user_input, track_titles, music_data):
                 track_row = music_data[music_data['Track'] == track_title].iloc[0]
                 artist = track_row['Artist']
                 spotify_url = track_row['Url_spotify']
-                spotify_link = f"[Listen on Spotify]({spotify_url})"
+                spotify_link = f"<a href='{spotify_url}' target='_blank' style='color: #1DB954; text-decoration: none;'>Listen on Spotify</a>"
                 table_data.append((i, track_title, artist, spotify_link))
             
             st.markdown("""
@@ -66,7 +66,7 @@ def recommend(user_input, track_titles, music_data):
             }
 
             .styled-table thead tr {
-                background-color: #1DB954;
+                background-color: #1DB954; 
                 color: #fff;
                 text-align: left;
             }
@@ -74,10 +74,11 @@ def recommend(user_input, track_titles, music_data):
             .styled-table th,
             .styled-table td {
                 padding: 12px 15px;
+                border-bottom: 2px solid #000;
             }
 
             .styled-table tbody tr {
-                border-bottom: 1px solid #dddddd;
+                background-color: #f3f3f3; 
             }
 
             .styled-table tbody tr:nth-of-type(even) {
@@ -87,10 +88,14 @@ def recommend(user_input, track_titles, music_data):
             .styled-table tbody tr:last-of-type {
                 border-bottom: 2px solid #1DB954;
             }
+
+            .styled-table tbody td {
+                color: #000; 
+            }
             </style>
             """, unsafe_allow_html=True)
 
-            df = pd.DataFrame(table_data, columns=["No.", "Track", "Artist", "Spotify"])
+            df = pd.DataFrame(table_data, columns=["No.", "Song's name", "Artist", "Spotify"])
             st.write(df.to_html(escape=False, classes='styled-table'), unsafe_allow_html=True)
 
 # Main function
@@ -98,7 +103,7 @@ def main():
     st.set_page_config(page_title="Music Recommender", page_icon="🎵")
     music_data = load_data()
     track_titles = music_data['Track'].tolist()
-    st.title("Music Recommender")
+    st.title("🎵Music Recommender")
     input_method = st.radio("Select Input Method:", ("Search", "Choose from menu"))
     
     if input_method == "Search":
