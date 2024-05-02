@@ -74,13 +74,13 @@ def recommend(user_input, track_titles, music_data):
         if collab_filtering_result:
             st.success(f"🎶 Top 10 tracks similar to '{closest_match}' based on Collaborative Filtering:")
             table_data = []
-            for i, track_title in enumerate(collab_filtering_result[:10], start=1):
+            for track_title in collab_filtering_result[:10]:
                 track_row = music_data[music_data['Track'] == track_title].iloc[0]
                 artist = track_row['Artist']
                 spotify_url = track_row['Url_spotify']
                 spotify_link = f"[Listen on Spotify]({spotify_url})"
-                table_data.append((i, track_title, artist, spotify_link))
-            df = pd.DataFrame(table_data, columns=["#", "Track", "Artist", "Spotify"])
+                table_data.append((track_title, artist, spotify_link))
+            df = pd.DataFrame(table_data, columns=["Track", "Artist", "Spotify"])
             st.table(df.style.set_properties(**{'background-color': '#1DB954', 'color': 'white', 'font-family': 'Arial, sans-serif'}))
         else:
             st.warning("No similar tracks found based on Collaborative Filtering.")
