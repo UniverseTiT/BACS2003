@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from difflib import get_close_matches
 from sklearn.metrics.pairwise import cosine_similarity
+from PIL import Image
 
 # Load the dataset
 @st.cache
@@ -73,12 +74,13 @@ def recommend(user_input, track_titles, music_data):
         if collab_filtering_result:
             st.success(f"🎶 Top 10 tracks similar to '{closest_match}' based on Collaborative Filtering:")
             table_data = []
-            for track_title in collab_filtering_result[:10]:
+            for i, track_title in enumerate(collab_filtering_result[:10], start=1):
                 track_row = music_data[music_data['Track'] == track_title].iloc[0]
                 artist = track_row['Artist']
                 spotify_url = track_row['Url_spotify']
-                table_data.append((track_title, artist, spotify_url))
-            df = pd.DataFrame(table_data, columns=["Track", "Artist", "Spotify"])
+                spotify_link = f"[Listen on Spotify]({spotify_url})"
+                table_data.append((i, track_title, artist, spotify_link))
+            df = pd.DataFrame(table_data, columns=["#", "Track", "Artist", "Spotify"])
             st.table(df)
         else:
             st.warning("No similar tracks found based on Collaborative Filtering.")
@@ -97,36 +99,19 @@ def main():
     track_titles = music_data['Track'].tolist()
 
     # Set app title
-    st.title("Spotify Search")
+    st.title("Music Recommender")
+    
+    # Get user input either through text input or dropdown
+    input_method = st.radio("Select Input Method:", ("Search", "Choose from menu"))
+    
+    if input_method == "Search":
+        # Get user input through text input
+        user_input = st.text_input("Enter a track title:", "")
+    else:
+        # Get user input through dropdown
+        user_input = st.selectbox("Select a track:", track_titles)
 
-    # Set background color and padding for the whole page
-    st.markdown(
-        """
-        <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #181818;
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # Search form
-    st.markdown(
-        """
-        <div id="search-form" style="text-align: center; margin-bottom: 20px;">
-            <input type="text" id="search-input" placeholder="Search for an artist or track..." style="width: 300px; padding: 10px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc; margin-right: 10px;">
-            <button id="search-button" style="padding: 10px 20px; font-size: 16px; border-radius: 5px; border: none; cursor: pointer; background-color: #1db954; color: #fff;">Search</button>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # Recommendation results
+    # Recommend similar tracks
     recommend(user_input, track_titles, music_data)
 
 if __name__ == "__main__":
