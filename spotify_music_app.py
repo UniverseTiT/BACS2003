@@ -81,7 +81,7 @@ def recommend(user_input, track_titles, music_data):
                 spotify_link = f"[Listen on Spotify]({spotify_url})"
                 table_data.append((track_title, artist, spotify_link))
             df = pd.DataFrame(table_data, columns=["Track", "Artist", "Spotify"])
-            st.table(df.style.set_properties(**{'background-color': '#1DB954', 'color': 'white', 'font-family': 'Arial, sans-serif'}))
+            st.table(df.style.set_properties(**{'background-color': '#191414', 'color': '#FFFFFF', 'font-family': 'Helvetica, sans-serif'}))
         else:
             st.warning("No similar tracks found based on Collaborative Filtering.")
     else:
@@ -101,6 +101,19 @@ def main():
     # Set app title
     st.title("Music Recommender")
     
+    # Set background color and padding for the whole page
+    st.markdown(
+        """
+        <style>
+        body {
+            background-color: #191414;
+            padding: 1rem;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     # Get user input either through text input or dropdown
     input_method = st.radio("Select Input Method:", ("Search", "Choose from menu"))
     
