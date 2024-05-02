@@ -79,8 +79,8 @@ def recommend(user_input, track_titles, music_data):
                 artist = track_row['Artist']
                 spotify_url = track_row['Url_spotify']
                 spotify_link = f"[Listen on Spotify]({spotify_url})"
-                table_data.append((i, track_title, artist,spotify_url, spotify_link))
-            df = pd.DataFrame(table_data, columns=["#", "Track", "Artist","URL", "Spotify"])
+                table_data.append((i, track_title, artist, spotify_link))
+            df = pd.DataFrame(table_data, columns=["#", "Track", "Artist", "Spotify"])
             st.table(df)
         else:
             st.warning("No similar tracks found based on Collaborative Filtering.")
