@@ -49,10 +49,49 @@ def recommend(user_input, track_titles, music_data):
                 track_row = music_data[music_data['Track'] == track_title].iloc[0]
                 artist = track_row['Artist']
                 spotify_url = track_row['Url_spotify']
-                spotify_link = f"<a href='{spotify_url}' target='_blank'>Listen on Spotify</a>"
+                spotify_link = f"[Listen on Spotify]({spotify_url})"
                 table_data.append((i, track_title, artist, spotify_link))
-            df = pd.DataFrame(table_data, columns=["No.", "Song Name", "Artist", "Spotify"])
-            st.write(df.to_html(escape=False), unsafe_allow_html=True,)
+            
+            st.markdown("""
+            <style>
+            .styled-table {
+                border-collapse: collapse;
+                margin: 25px 0;
+                font-size: 0.9em;
+                font-family: sans-serif;
+                min-width: 400px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            .styled-table thead tr {
+                background-color: #1DB954;
+                color: #fff;
+                text-align: left;
+            }
+
+            .styled-table th,
+            .styled-table td {
+                padding: 12px 15px;
+            }
+
+            .styled-table tbody tr {
+                border-bottom: 1px solid #dddddd;
+            }
+
+            .styled-table tbody tr:nth-of-type(even) {
+                background-color: #f3f3f3;
+            }
+
+            .styled-table tbody tr:last-of-type {
+                border-bottom: 2px solid #1DB954;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
+            df = pd.DataFrame(table_data, columns=["No.", "Track", "Artist", "Spotify"])
+            st.write(df.to_html(escape=False, classes='styled-table'), unsafe_allow_html=True)
 
 # Main function
 def main():
