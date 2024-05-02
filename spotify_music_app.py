@@ -78,7 +78,7 @@ def recommend(user_input, track_titles, music_data):
                 track_row = music_data[music_data['Track'] == track_title].iloc[0]
                 artist = track_row['Artist']
                 spotify_url = track_row['Url_spotify']
-                spotify_link = f"[Listen on Spotify]({spotify_url})"
+                spotify_link = f"[![Listen on Spotify](https://image.flaticon.com/icons/png/512/174/174872.png)]({spotify_url})"
                 table_data.append((i, track_title, artist, spotify_link))
             df = pd.DataFrame(table_data, columns=["#", "Track", "Artist", "Spotify"])
             st.table(df)
