@@ -96,7 +96,7 @@ def main():
     st.title("Music Recommender")
     
     # Get user input either through text input or dropdown
-    input_method = st.radio("Select Input Method:", ("Search", "Dropdown"))
+    input_method = st.radio("Select Input Method:", ("Search", "Select from menu"))
     
     if input_method == "Search":
         # Get user input through text input
