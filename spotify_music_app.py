@@ -66,7 +66,7 @@ def recommend(user_input, track_titles, music_data):
             }
 
             .styled-table thead tr {
-                background-color: #1DB954; /* 修改为原本的颜色 */
+                background-color: #1DB954; 
                 color: #fff;
                 text-align: left;
             }
@@ -90,7 +90,7 @@ def recommend(user_input, track_titles, music_data):
             }
 
             .styled-table tbody td {
-                color: #000; /* 修改为黑色 */
+                color: #000; 
             }
             </style>
             """, unsafe_allow_html=True)
@@ -103,7 +103,7 @@ def main():
     st.set_page_config(page_title="Music Recommender", page_icon="🎵")
     music_data = load_data()
     track_titles = music_data['Track'].tolist()
-    st.title("Music Recommender")
+    st.title("🎵Music Recommender")
     input_method = st.radio("Select Input Method:", ("Search", "Choose from menu"))
     
     if input_method == "Search":
