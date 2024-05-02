@@ -49,7 +49,7 @@ def recommend(user_input, track_titles, music_data):
                 track_row = music_data[music_data['Track'] == track_title].iloc[0]
                 artist = track_row['Artist']
                 spotify_url = track_row['Url_spotify']
-                spotify_link = f"[Listen on Spotify]({spotify_url})"
+                spotify_link = f"<a href='{spotify_url}' target='_blank' style='color: #1DB954; text-decoration: none;'>Listen on Spotify</a>"
                 table_data.append((i, track_title, artist, spotify_link))
             
             st.markdown("""
@@ -86,6 +86,10 @@ def recommend(user_input, track_titles, music_data):
 
             .styled-table tbody tr:last-of-type {
                 border-bottom: 2px solid #1DB954;
+            }
+
+            .styled-table tbody td {
+                color: #777;
             }
             </style>
             """, unsafe_allow_html=True)
