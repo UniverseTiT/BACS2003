@@ -66,7 +66,7 @@ def recommend(user_input, track_titles, music_data):
             }
 
             .styled-table thead tr {
-                background-color: #1DB954;
+                background-color: #1DB954; /* 修改为原本的颜色 */
                 color: #fff;
                 text-align: left;
             }
@@ -78,7 +78,7 @@ def recommend(user_input, track_titles, music_data):
             }
 
             .styled-table tbody tr {
-                border-bottom: 1px solid #000; /* 修改为黑色 */
+                background-color: #f3f3f3; /* 修改为灰色 */
             }
 
             .styled-table tbody tr:nth-of-type(even) {
@@ -90,7 +90,7 @@ def recommend(user_input, track_titles, music_data):
             }
 
             .styled-table tbody td {
-                color: #777;
+                color: #000; /* 修改为黑色 */
             }
             </style>
             """, unsafe_allow_html=True)
