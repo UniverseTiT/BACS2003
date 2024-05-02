@@ -63,6 +63,9 @@ def recommend(user_input, track_titles, music_data):
         # Show the closest match
         st.success(f"🎵 Closest match found: {closest_match}")
         
+        # Get the row corresponding to the closest match
+        closest_match_row = music_data[music_data['Track'] == closest_match].iloc[0]
+        
         # Perform collaborative filtering
         collab_filtering_result = collaborative_filtering(closest_match, music_data)
         
@@ -73,8 +76,11 @@ def recommend(user_input, track_titles, music_data):
             st.markdown('<style>.spotify-list li {padding: 10px; border-bottom: 1px solid #333333; color: #ffffff; font-size: 16px;}</style>', unsafe_allow_html=True)
             st.markdown('<style>.spotify-list li:last-child {border-bottom: none;}</style>', unsafe_allow_html=True)
             st.markdown('<ul class="spotify-list">', unsafe_allow_html=True)
-            for i, track in enumerate(collab_filtering_result[:10], start=1):
-                st.markdown(f'<li>{i}. {track}</li>', unsafe_allow_html=True)
+            for i, track_title in enumerate(collab_filtering_result[:10], start=1):
+                track_row = music_data[music_data['Track'] == track_title].iloc[0]
+                artist = track_row['Artist']
+                spotify_url = track_row['Url_spotify']
+                st.markdown(f'<li>{i}. **{track_title}** by {artist} [Listen on Spotify]({spotify_url})</li>', unsafe_allow_html=True)
             st.markdown('</ul>', unsafe_allow_html=True)
         else:
             st.warning("No similar tracks found based on Collaborative Filtering.")
@@ -96,7 +102,7 @@ def main():
     st.title("Music Recommender")
     
     # Get user input either through text input or dropdown
-    input_method = st.radio("Select Input Method:", ("Search", "Select from menu"))
+    input_method = st.radio("Select Input Method:", ("Search", "Dropdown"))
     
     if input_method == "Search":
         # Get user input through text input
