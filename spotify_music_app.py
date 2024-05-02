@@ -74,11 +74,11 @@ def recommend(user_input, track_titles, music_data):
             .styled-table th,
             .styled-table td {
                 padding: 12px 15px;
-                border-bottom: 2px solid #ddd;
+                border-bottom: 2px solid #000; /* 修改为黑色 */
             }
 
             .styled-table tbody tr {
-                border-bottom: 1px solid #ddd;
+                border-bottom: 1px solid #000; /* 修改为黑色 */
             }
 
             .styled-table tbody tr:nth-of-type(even) {
@@ -95,7 +95,7 @@ def recommend(user_input, track_titles, music_data):
             </style>
             """, unsafe_allow_html=True)
 
-            df = pd.DataFrame(table_data, columns=["No.", "Song Name", "Artist", "Spotify"])
+            df = pd.DataFrame(table_data, columns=["No.", "Track", "Artist", "Spotify"])
             st.write(df.to_html(escape=False, classes='styled-table'), unsafe_allow_html=True)
 
 # Main function
