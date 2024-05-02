@@ -74,11 +74,11 @@ def recommend(user_input, track_titles, music_data):
             .styled-table th,
             .styled-table td {
                 padding: 12px 15px;
-                border-bottom: 2px solid #000; /* 修改为黑色 */
+                border-bottom: 2px solid #000;
             }
 
             .styled-table tbody tr {
-                background-color: #f3f3f3; /* 修改为灰色 */
+                background-color: #f3f3f3; 
             }
 
             .styled-table tbody tr:nth-of-type(even) {
