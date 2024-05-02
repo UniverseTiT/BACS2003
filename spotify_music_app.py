@@ -95,7 +95,7 @@ def recommend(user_input, track_titles, music_data):
             </style>
             """, unsafe_allow_html=True)
 
-            df = pd.DataFrame(table_data, columns=["No.", "Track", "Artist", "Spotify"])
+            df = pd.DataFrame(table_data, columns=["No.", "Song's name", "Artist", "Spotify"])
             st.write(df.to_html(escape=False, classes='styled-table'), unsafe_allow_html=True)
 
 # Main function
