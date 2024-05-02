@@ -48,11 +48,11 @@ def recommend(user_input, track_titles, music_data):
             for i, track_title in enumerate(collab_filtering_result[:10], start=1):
                 track_row = music_data[music_data['Track'] == track_title].iloc[0]
                 artist = track_row['Artist']
-                spotify_url = track_row['Url_spotify']
+                spotify_url = track_row['Spotify']
                 spotify_link = f"<a href='{spotify_url}' target='_blank'>Listen on Spotify</a>"
                 table_data.append((i, track_title, artist, spotify_link))
-            df = pd.DataFrame(table_data, columns=["#", "Track", "Artist", "Spotify"])
-            st.write(df.to_html(escape=False), unsafe_allow_html=True,)
+            df = pd.DataFrame(table_data, columns=["No.", "Track", "Artist", "Spotify"])
+            st.write(df.to_html(index=False, escape=False), unsafe_allow_html=True)
 
 # Main function
 def main():
