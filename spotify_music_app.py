@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from difflib import get_close_matches
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Load the dataset
 @st.cache
@@ -18,6 +19,32 @@ def find_closest_match(user_input, track_titles):
     else:
         # Return None if no close match found
         return None
+
+# Collaborative Filtering
+def collaborative_filtering(track_title, music_data):
+    # Compute similarity matrix
+    similarity_matrix = cosine_similarity(music_data[['Likes', 'Views']])
+    
+    # Find index of the input track
+    track_index = music_data[music_data['Track'] == track_title].index[0]
+    
+    # Retrieve similar tracks with their similarity scores
+    similar_tracks = list(enumerate(similarity_matrix[track_index]))
+    
+    # Sort similar tracks by similarity score in descending order
+    sorted_similar_tracks = sorted(similar_tracks, key=lambda x: x[1], reverse=True)
+    
+    # Extract top similar tracks excluding the input track itself
+    top_similar_tracks = sorted_similar_tracks[1:11]
+    
+    # Get the indices of the top similar tracks
+    top_indices = [index for index, _ in top_similar_tracks]
+    
+    # Retrieve the actual track titles corresponding to the indices
+    top_track_titles = music_data.iloc[top_indices]['Track'].tolist()
+    
+    # Return top similar tracks
+    return top_track_titles
 
 # Function to handle the recommendation process
 def recommend(user_input, track_titles, music_data):
@@ -50,12 +77,6 @@ def recommend(user_input, track_titles, music_data):
             st.warning("No similar tracks found based on Collaborative Filtering.")
     else:
         st.error(f"No close match found for '{user_input}'. Please enter another title.")
-
-# Collaborative filtering function (replace this with your actual collaborative filtering function)
-def collaborative_filtering(track_title, music_data):
-    # Dummy implementation: return top 10 track titles from the dataset excluding the input track
-    similar_tracks = music_data[music_data['Track'] != track_title]['Track'].head(10).tolist()
-    return similar_tracks
 
 # Main function
 def main():
