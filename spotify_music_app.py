@@ -95,8 +95,15 @@ def main():
     # Set app title
     st.title("Music Recommender")
     
-    # Get user input
-    user_input = st.text_input("Enter a track title:", "")
+    # Get user input either through text input or dropdown
+    input_method = st.radio("Select Input Method:", ("Search", "Dropdown"))
+    
+    if input_method == "Search":
+        # Get user input through text input
+        user_input = st.text_input("Enter a track title:", "")
+    else:
+        # Get user input through dropdown
+        user_input = st.selectbox("Select a track:", track_titles)
 
     # Recommend similar tracks
     recommend(user_input, track_titles, music_data)
