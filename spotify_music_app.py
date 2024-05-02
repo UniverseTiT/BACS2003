@@ -51,7 +51,7 @@ def recommend(user_input, track_titles, music_data):
                 spotify_url = track_row['Url_spotify']
                 spotify_link = f"<a href='{spotify_url}' target='_blank'>Listen on Spotify</a>"
                 table_data.append((i, track_title, artist, spotify_link))
-            df = pd.DataFrame(table_data, columns=["No.", "Track", "Artist", "Spotify"])
+            df = pd.DataFrame(table_data, columns=["No.", "Song Name", "Artist", "Spotify"])
             st.write(df.to_html(escape=False), unsafe_allow_html=True,)
 
 # Main function
