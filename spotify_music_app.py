@@ -23,7 +23,7 @@ def collaborative_filtering(track_title, music_data):
     track_index = music_data_cleaned[music_data_cleaned['Track'] == track_title].index[0]
     similar_tracks = list(enumerate(similarity_matrix[track_index]))
     sorted_similar_tracks = sorted(similar_tracks, key=lambda x: x[1], reverse=True)
-    top_similar_tracks = sorted_similar_tracks[1:11]
+    top_similar_tracks = sorted_similar_tracks[0:10]
     top_indices = [index for index, _ in top_similar_tracks]
     top_track_titles = music_data_cleaned.iloc[top_indices]['Track'].tolist()
     return top_track_titles
